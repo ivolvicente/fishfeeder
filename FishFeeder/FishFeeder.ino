@@ -5,7 +5,8 @@
  * ----
  * DS3231 Library for RTC Control
  * Copyright (C)2015 Rinky-Dink Electronics, Henning Karlsen. All right reserved
- * web: http://www.RinkyDinkElectronics.com/ 
+ * web: http://www.RinkyDinkElectronics.com/
+ * @version 1.0.2 
  */
 
 #include <Servo.h>
@@ -21,15 +22,15 @@ const int servoPin = 9;     // Arduino PIN Number (PWD)
 const int maxDeg = 45;      // Max Degree
 const int degDelay = 30;    // Delay between pulses
 const int degIncrement = 4; // Degree to increment
-int pos;                    // Save servo position
+int pos = 0;                // Save servo position
 // END: FOOD Servo Vars
 
 // PROJECT VARS
 const boolean devMode = false;   // When Dev Mode is true, Serial comms are avaiable
-String currTime;                 // Save current time hh:mm
-String currDate;                 // Save current date aaaa.mm.dd 
-String prevDate = "2000.01.01";  // default for 1st time, then setted to last feed date
-int servoInPosition;             // Servo position when loop function start
+String currTime ="";             // Save current time hh:mm
+String currDate ="";             // Save current date aaaa.mm.dd 
+String prevDate = "feeder";      // Set same string into this var,prevent any malfunction in RTC to set a start date equal to currDate
+int servoInPosition = 0;         // Servo position when loop function start
 String feedTime = "22:00";       // Format hh:mm/24h ex: 16:09 
 int feedTurn = 3;                // How many times servo make moviment
 
@@ -40,6 +41,13 @@ void setup() {
   // Initialize the rtc object
   rtc.begin();
 
+  // Reset Servo - Sametimes the servo position is not 0 on Arduino start
+  servoInPosition = foodServo.read();
+  if(servoInPosition > 0){    
+    swl("Reset Food Servo");
+    resetServoPosition(servoInPosition);
+  }
+
   // Serial for Debug Proposes only in Development mode
   if(devMode){
     Serial.begin(9600);
@@ -49,13 +57,7 @@ void setup() {
 /**
  * Arduino Main Loop Function
  */
-void loop() {  
-  // Reset Servo - Sametimes the servo position is not 0 on Arduino start
-  servoInPosition = foodServo.read();
-  if(servoInPosition > 0){    
-    swl("Reset Food Servo");
-    resetServoPosition(servoInPosition);
-  }
+void loop() {    
 
   // Get current time
   currTime = rtc.getTimeStr(FORMAT_SHORT);
