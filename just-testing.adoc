@@ -21,3 +21,9 @@ The style can be any one of the admonition labels:
 * CAUTION
 * IMPORTANT
 ====
+
+[source,perl]
+die 'connect: '.$dbh->errstr;
+
+[source, c]
+#include <iostream>
