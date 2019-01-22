@@ -1,7 +1,7 @@
 = Testing Ascii Docs
 :icons: font
 
-
+.This is a nicer way to write documents
 
 * [*] Check
 * [ ] Uncheck
