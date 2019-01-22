@@ -1,5 +1,4 @@
 = Testing Ascii Docs
-:icons: font
 
 .This is a nicer way to write documents
 
@@ -22,8 +21,13 @@ The style can be any one of the admonition labels:
 * IMPORTANT
 ====
 
+.file_example.pl
 [source,perl]
-die 'connect: '.$dbh->errstr;
-
-[source, c]
-#include <iostream>
+----
+# *Source* block
+# Use: highlight code listings
+# (require `source-highlight` or `pygmentize`)
+use DBI;
+my $dbh = DBI->connect('...',$u,$p)
+    or die "connect: $dbh->errstr";
+----
